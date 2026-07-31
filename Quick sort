@@ -1,0 +1,62 @@
+#include <iostream>
+#include <vector>
+#include <utility> // For std::swap
+
+// Function to partition the array around a pivot
+int partition(std::vector<int>& arr, int low, int high) {
+    // Choose the rightmost element as the pivot
+    int pivot = arr[high]; 
+    
+    // Index of the smaller element
+    int i = low - 1; 
+
+    for (int j = low; j < high; j++) {
+        // If the current element is smaller than or equal to the pivot
+        if (arr[j] <= pivot) {
+            i++; // Increment index of the smaller element
+            std::swap(arr[i], arr[j]);
+        }
+    }
+    
+    // Swap the pivot element with the element at (i + 1)
+    std::swap(arr[i + 1], arr[high]);
+    
+    // Return the final pinning position of the pivot
+    return i + 1;
+}
+
+// The main Quick Sort function
+void quickSort(std::vector<int>& arr, int low, int high) {
+    // Base case: If low is less than high
+    if (low < high) {
+        // pi is the partitioning index, arr[pi] is now at the right place
+        int pi = partition(arr, low, high);
+
+        // Recursively sort elements before and after partition
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
+    }
+}
+
+// Helper function to print the vector
+void printVector(const std::vector<int>& arr) {
+    for (int num : arr) {
+        std::cout << num << " ";
+    }
+    std::cout << "\n";
+}
+
+int main() {
+    std::vector<int> data = {10, 7, 8, 9, 1, 5};
+    
+    std::cout << "Unsorted array: ";
+    printVector(data);
+
+    // Call quickSort on the entire vector bounds
+    quickSort(data, 0, data.size() - 1);
+
+    std::cout << "Sorted array: ";
+    printVector(data);
+
+    return 0;
+}
